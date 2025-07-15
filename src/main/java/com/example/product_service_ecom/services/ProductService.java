@@ -1,6 +1,8 @@
 package com.example.product_service_ecom.services;
 
+import com.example.product_service_ecom.models.Category;
 import com.example.product_service_ecom.models.Product;
+import com.example.product_service_ecom.repositories.CategoryRepository;
 import com.example.product_service_ecom.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,13 @@ import java.util.List;
 public class ProductService implements ProductServiceInterface{
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
 
     @Override
     public Product createProduct(Product product) {
-        
+        Category category = categoryRepository.findById(product.getCategory().getId()).orElse(null);
+        product.setCategory(category);
         return productRepository.save(product);
     }
 
